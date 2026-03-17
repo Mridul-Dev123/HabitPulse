@@ -48,3 +48,4 @@ npm-debug.log*
 # Miscellanous
 .DS_Store
 db.txt
+Server/server.log
