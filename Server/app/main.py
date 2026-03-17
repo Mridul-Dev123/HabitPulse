@@ -47,8 +47,7 @@ async def lifespan(app: FastAPI):
         
         # Clean up the pool on shutdown
         logger.info("Shutting down... closing database pool.")
-        pool.close()
-        await pool.wait_closed()
+        await pool.close()
         logger.info("Database pool closed safely.")
     except Exception as e:
         logger.error(f"Error during startup/shutdown: {e}", exc_info=True)
