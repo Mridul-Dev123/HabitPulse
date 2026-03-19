@@ -24,6 +24,9 @@ else:
 
 from fastapi import FastAPI
 import os
+from dotenv import load_dotenv
+
+load_dotenv()
 from fastapi.middleware.cors import CORSMiddleware
 from contextlib import asynccontextmanager
 from app.core.database import get_db_pool, init_db
