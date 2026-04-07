@@ -29,9 +29,26 @@ async def init_db(pool: AsyncConnectionPool):
                     CREATE TABLE IF NOT EXISTS users (
                         id SERIAL PRIMARY KEY,
                         username VARCHAR(255) UNIQUE NOT NULL,
-                        hashed_password VARCHAR(255) NOT NULL,
+                        email VARCHAR(255),
+                        hashed_password VARCHAR(255),
+                        auth_provider VARCHAR(50) NOT NULL DEFAULT 'local',
+                        google_sub VARCHAR(255),
                         is_active BOOLEAN DEFAULT TRUE
                     );
+                """)
+                await cur.execute("ALTER TABLE users ADD COLUMN IF NOT EXISTS email VARCHAR(255);")
+                await cur.execute("ALTER TABLE users ADD COLUMN IF NOT EXISTS auth_provider VARCHAR(50) NOT NULL DEFAULT 'local';")
+                await cur.execute("ALTER TABLE users ADD COLUMN IF NOT EXISTS google_sub VARCHAR(255);")
+                await cur.execute("ALTER TABLE users ALTER COLUMN hashed_password DROP NOT NULL;")
+                await cur.execute("""
+                    CREATE UNIQUE INDEX IF NOT EXISTS users_email_unique_idx
+                    ON users (email)
+                    WHERE email IS NOT NULL;
+                """)
+                await cur.execute("""
+                    CREATE UNIQUE INDEX IF NOT EXISTS users_google_sub_unique_idx
+                    ON users (google_sub)
+                    WHERE google_sub IS NOT NULL;
                 """)
         logger.info("Database tables verified/created successfully.")
     except Exception as e:

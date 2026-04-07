@@ -1,5 +1,4 @@
 from pydantic import BaseModel
-from typing import Optional
 
 class UserLogin(BaseModel):
     username: str
@@ -8,6 +7,9 @@ class UserLogin(BaseModel):
 class UserCreate(BaseModel):
     username: str
     password: str
+
+class GoogleAuthRequest(BaseModel):
+    credential: str
 
 class Token(BaseModel):
     access_token: str

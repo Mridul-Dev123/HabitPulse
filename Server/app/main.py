@@ -1,6 +1,7 @@
 import sys
 import asyncio
 import logging
+from pathlib import Path
 
 # Configure application-wide logging
 logging.basicConfig(
@@ -26,7 +27,7 @@ from fastapi import FastAPI
 import os
 from dotenv import load_dotenv
 
-load_dotenv()
+load_dotenv(Path(__file__).resolve().parents[1] / ".env")
 from fastapi.middleware.cors import CORSMiddleware
 from contextlib import asynccontextmanager
 from app.core.database import get_db_pool, init_db
